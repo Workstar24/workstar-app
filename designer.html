@@ -1,0 +1,1237 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sticker Lab — WORKSTAR Studio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Nunito:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --yellow: #ffd23f;
+        --pink: #ff6b9d;
+        --blue: #4ecdc4;
+        --purple: #9b5de5;
+        --green: #06d6a0;
+        --dark: #1a1a2e;
+        --white: #fffef7;
+        --gray: #f5f4ee;
+        --border: #e5e4dc;
+        --muted: #6b7280;
+      }
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: 'Nunito', sans-serif;
+        background: var(--gray);
+        color: var(--dark);
+        overflow-x: hidden;
+      }
+      /* NAV */
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 36px;
+        background: var(--white);
+        border-bottom: 2px solid var(--dark);
+        position: sticky;
+        top: 0;
+        z-index: 200;
+      }
+      .nav-logo {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 900;
+        color: var(--dark);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .logo-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--pink);
+        border-radius: 50%;
+        animation: bounce 1.5s ease-in-out infinite;
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+      .nav-back {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 7px 15px;
+        border-radius: 50px;
+        border: 2px solid var(--border);
+        transition: all 0.2s;
+      }
+      .nav-back:hover {
+        border-color: var(--dark);
+        color: var(--dark);
+      }
+      .nav-center {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: var(--muted);
+      }
+
+      /* LAYOUT */
+      .designer-wrap {
+        display: grid;
+        grid-template-columns: 265px 1fr 285px;
+        height: calc(100vh - 55px);
+        overflow: hidden;
+      }
+
+      /* PANELS */
+      .panel,
+      .panel-right {
+        background: var(--white);
+        overflow-y: auto;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .panel {
+        border-right: 2px solid var(--dark);
+      }
+      .panel-right {
+        border-left: 2px solid var(--dark);
+      }
+      .ps {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .pl {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.66rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding-bottom: 7px;
+        border-bottom: 1.5px solid var(--border);
+      }
+
+      /* UPLOAD */
+      .upload-zone {
+        border: 2.5px dashed var(--border);
+        border-radius: 13px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: var(--gray);
+      }
+      .upload-zone:hover,
+      .upload-zone.over {
+        border-color: var(--pink);
+        background: #fff0f5;
+      }
+      .upload-zone .ui {
+        font-size: 1.9rem;
+        margin-bottom: 7px;
+      }
+      .upload-zone p {
+        font-size: 0.72rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .upload-zone strong {
+        color: var(--dark);
+      }
+      #file-input {
+        display: none;
+      }
+
+      /* SHAPE */
+      .shape-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 7px;
+      }
+      .sh-btn {
+        aspect-ratio: 1;
+        background: var(--gray);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        cursor: pointer;
+        font-size: 1.25rem;
+        transition: all 0.2s;
+      }
+      .sh-btn span {
+        font-size: 0.56rem;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .sh-btn:hover {
+        border-color: var(--dark);
+        background: white;
+      }
+      .sh-btn.active {
+        border-color: var(--dark);
+        background: var(--yellow);
+        box-shadow: 3px 3px 0 var(--dark);
+      }
+
+      /* COLORS */
+      .color-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+      }
+      .cd {
+        width: 33px;
+        height: 33px;
+        border-radius: 50%;
+        border: 2.5px solid transparent;
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          border-color 0.15s;
+      }
+      .cd:hover {
+        transform: scale(1.2);
+      }
+      .cd.active {
+        border-color: var(--dark);
+        transform: scale(1.15);
+        box-shadow:
+          0 0 0 2px white,
+          0 0 0 4px var(--dark);
+      }
+      .cc-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 3px;
+      }
+      .cc-row label {
+        font-size: 0.7rem;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .cc-row input[type='color'] {
+        width: 36px;
+        height: 36px;
+        border: 2px solid var(--border);
+        border-radius: 7px;
+        padding: 2px;
+        cursor: pointer;
+      }
+
+      /* SIZE */
+      .size-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+      }
+      .
+
+
+sz-btn {
+        padding: 9px 7px;
+        background: var(--gray);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .sz-btn:hover {
+        border-color: var(--dark);
+        background: white;
+      }
+      .sz-btn.active {
+        border-color: var(--dark);
+        background: var(--yellow);
+        box-shadow: 2px 2px 0 var(--dark);
+      }
+      .sz-btn .sv {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 900;
+      }
+      .sz-btn .ss {
+        font-size: 0.6rem;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* MATERIAL */
+      .mat-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .mat-btn {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 11px;
+        background: var(--gray);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 700;
+        transition: all 0.2s;
+      }
+      .mat-btn:hover {
+        border-color: var(--dark);
+        background: white;
+      }
+      .mat-btn.active {
+        border-color: var(--dark);
+        background: var(--dark);
+        color: white;
+      }
+      .mi {
+        font-size: 1.05rem;
+        width: 22px;
+        text-align: center;
+      }
+
+      /* CANVAS */
+      .canvas-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+        gap: 14px;
+        background: var(--gray);
+        position: relative;
+        overflow: hidden;
+      }
+      .canvas-area::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+          circle,
+          rgba(0, 0, 0, 0.07) 1px,
+          transparent 1px
+        );
+        background-size: 22px 22px;
+        pointer-events: none;
+      }
+      .toolbar {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+        background: white;
+        border: 2px solid var(--dark);
+        border-radius: 50px;
+        padding: 6px 14px;
+        box-shadow: 3px 3px 0 var(--dark);
+        position: relative;
+        z-index: 2;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .tb-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: none;
+        border: none;
+        padding: 5px 11px;
+        border-radius: 50px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: 'Cabinet Grotesk', sans-serif;
+        color: var(--muted);
+        transition: all 0.2s;
+      }
+      .tb-btn:hover {
+        background: var(--gray);
+        color: var(--dark);
+      }
+      .tb-btn.active {
+        background: var(--dark);
+        color: white;
+      }
+      .tb-div {
+        width: 1px;
+        height: 18px;
+        background: var(--border);
+      }
+      #sticker-canvas {
+        border: 3px solid var(--dark);
+        border-radius: 16px;
+        background: white;
+        box-shadow: 8px 8px 0 var(--dark);
+        cursor: crosshair;
+        position: relative;
+        z-index: 2;
+        max-width: 100%;
+      }
+      .canvas-info {
+        display: flex;
+        gap: 16px;
+        font-size: 0.7rem;
+        color: var(--muted);
+        font-weight: 700;
+        position: relative;
+        z-index: 2;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .canvas-info span {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* TEXT TOOL */
+      .txt-input {
+        width: 100%;
+        background: var(--gray);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        padding: 9px 13px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 0.88rem;
+        color: var(--dark);
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .txt-input:focus {
+        border-color: var(--dark);
+        background: white;
+      }
+      .font-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .font-btn {
+        padding: 5px 11px;
+        background: var(--gray);
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .font-btn:hover {
+        border-color: var(--dark);
+      }
+      .font-btn.active {
+        background: var(--dark);
+        color: white;
+        border-color: var(--dark);
+      }
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .slider-row input[type='range'] {
+        flex: 1;
+        accent-color: var(--dark);
+      }
+      .sv2 {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 900;
+        min-width: 30px;
+        text-align: right;
+      }
+      .tc-row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .tc {
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        border: 2.5px solid transparent;
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+      .tc:hover {
+        transform: scale(1.2);
+      }
+      .tc.active {
+        border-color: var(--dark);
+        box-shadow:
+          0 0 0 2px white,
+          0 0 0 4px var(--dark);
+      }
+
+      /* ORDER PANEL */
+      .order-box {
+        background: var(--gray);
+        border: 2px solid var(--border);
+        border-radius: 13px;
+        padding: 16px;
+      }
+      .order-box h4 {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.8rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        margin-bottom: 12px;
+        color: var(--muted);
+      }
+      .ol {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        padding: 5px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .ol:last-child {
+        border: none;
+      }
+      .ol.tot {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-weight: 900;
+        font-size: 1rem;
+        padding-top: 9px;
+        color: var(--dark);
+      }
+      .qty-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .
+
+
+qty-stepper {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .qty-btn {
+        width: 28px;
+        height: 28px;
+        border: 2px solid var(--dark);
+        border-radius: 7px;
+        background: white;
+        font-size: 0.95rem;
+        font-weight: 900;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Cabinet Grotesk', sans-serif;
+        transition: all 0.2s;
+      }
+      .qty-btn:hover {
+        background: var(--dark);
+        color: white;
+      }
+      .qty-val {
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 900;
+        min-width: 26px;
+        text-align: center;
+      }
+      .qty-presets {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+      .qp {
+        padding: 6px 4px;
+        background: var(--gray);
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 800;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
+      }
+      .qp:hover {
+        border-color: var(--dark);
+        background: white;
+      }
+      .qp.active {
+        background: var(--dark);
+        color: white;
+        border-color: var(--dark);
+      }
+
+      /* ACTION BUTTONS */
+      .act-btn {
+        width: 100%;
+        padding: 13px;
+        border-radius: 50px;
+        border: 2px solid var(--dark);
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.25s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+      }
+      .act-primary {
+        background: var(--dark);
+        color: white;
+      }
+      .act-primary:hover {
+        background: var(--pink);
+        border-color: var(--pink);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+      }
+      .act-yellow {
+        background: var(--yellow);
+        color: var(--dark);
+      }
+      .act-yellow:hover {
+        background: #f5c400;
+        transform: translateY(-2px);
+      }
+      .act-ghost {
+        background: transparent;
+        color: var(--dark);
+      }
+      .act-ghost:hover {
+        background: var(--gray);
+      }
+
+      /* GUARANTEE */
+      .gbox {
+        background: #f0fff8;
+        border: 1.5px solid var(--green);
+        border-radius: 11px;
+        padding: 13px;
+        font-size: 0.73rem;
+        color: #006644;
+        line-height: 1.7;
+      }
+      .gbox strong {
+        color: var(--dark);
+      }
+
+      /* TOAST */
+      .toast {
+        position: fixed;
+        bottom: 26px;
+        right: 26px;
+        z-index: 9999;
+        background: var(--dark);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 11px;
+        font-family: 'Cabinet Grotesk', sans-serif;
+        font-size: 0.83rem;
+        font-weight: 700;
+        border: 2px solid var(--dark);
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+        pointer-events: none;
+      }
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 960px) {
+        .designer-wrap {
+          grid-template-columns: 1fr;
+          height: auto;
+          overflow: visible;
+        }
+        .panel,
+        .panel-right {
+          border: none;
+          border-bottom: 2px solid var(--dark);
+        }
+        .canvas-area {
+          min-height: 480px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+
+    <nav>
+      <a href="index.html" class="nav-back">← Home</a>
+      <div class="nav-center">🎨 Sticker Designer</div>
+      <a href="index.html" class="nav-logo"
+        >Sticky<span class="logo-dot"></span>Studio</a
+      >
+    </nav>
+
+    <div class="designer-wrap">
+      <!-- LEFT PANEL -->
+      <div class="panel">
+        <!-- Upload -->
+        <div class="ps">
+          <div class="pl">📁 Upload Artwork</div>
+          <div
+            class="upload-zone"
+            id="upload-zone"
+            onclick="document.getElementById('file-input').click()"
+          >
+            <div class="ui">🖼</div>
+            <p>
+              <strong>Click or drag & drop</strong><br />PNG, JPG, GIF, PDF —
+              Max 25MB
+            </p>
+          </div>
+          <input
+            type="file"
+            id="file-input"
+            accept="image/*"
+            onchange="handleUpload(event)"
+          />
+        </div>
+
+        <!-- Shape -->
+        <div class="ps">
+          <div class="pl">✂️ Shape</div>
+          <div class="shape-grid">
+            <div class="sh-btn active" onclick="setShape('circle', this)">
+              ⬤<span>Circle</span>
+            </div>
+            <div class="sh-btn" onclick="setShape('square', this)">
+              ■<span>Square</span>
+            </div>
+            <div class="sh-btn" onclick="setShape('rounded', this)">
+              ▣<span>Rounded</span
+            </div>
+            <div class="sh-btn" onclick="setShape('star', this)">
+              ★<span>Star</span>
+            </div>
+            <div class="sh-btn" onclick="setShape('heart', this)">
+              ♥<span>Heart</span>
+            </div>
+            <div class="sh-btn" onclick="setShape('diecut', this)">
+              ✂<span>Die-Cut</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Background Color -->
+        <div class="ps">
+          <div class="pl">🎨 Background Color</div>
+          <div class="color-grid" id="bg-grid">
+            <div
+              class="cd active"
+              style="background: #fffef7"
+              onclick="setBg('#FFFEF7', this)"
+            ></div>
+
+           
+            <div
+              class="cd"
+              style="background: #ffd23f"
+              onclick="setBg('#FFD23F', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #ff6b9d"
+              onclick="setBg('#FF6B9D', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #4ecdc4"
+              onclick="setBg('#4ECDC4', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #9b5de5"
+              onclick="setBg('#9B5DE5', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #ff6b35"
+              onclick="setBg('#FF6B35', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #06d6a0"
+              onclick="setBg('#06D6A0', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #1a1a2e"
+              onclick="setBg('#1a1a2e', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #f5f4ee"
+              onclick="setBg('#f5f4ee', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #fff0f5"
+              onclick="setBg('#fff0f5', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #f0fff4"
+              onclick="setBg('#f0fff4', this)"
+            ></div>
+            <div
+              class="cd"
+              style="background: #e8f4ff"
+              onclick="setBg('#e8f4ff', this)"
+            ></div>
+          </div>
+          <div class="cc-row">
+            <label>Custom:</label>
+            <input
+              type="color"
+              value="#FFFEF7"
+              oninput="setBg(this.value, null)"
+            />
+          </div>
+        </div>
+
+        <!-- Size -->
+        <div class="ps">
+          <div class="pl">📏 Size</div>
+          <div class="size-grid">
+            <div class="sz-btn" onclick="setSize('2x2', 1.49, this)">
+              <div class="sv">2"×2"</div>
+              <div class="ss">Small</div>
+            </div>
+            <div class="sz-btn active" onclick="setSize('3x3', 2.99, this)">
+              <div class="sv">3"×3"</div>
+              <div class="ss">Standard</div>
+            </div>
+            <div class="sz-btn" onclick="setSize('4x4', 3.99, this)">
+              <div class="sv">4"×4"</div>
+              <div class="ss">Large</div>
+            </div>
+            <div class="sz-btn" onclick="setSize('5x5', 4.99, this)">
+              <div class="sv">5"×5"</div>
+              <div class="ss">XL</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Material -->
+        <div class="ps">
+          <div class="pl">🧪 Material</div>
+          <div class="mat-list">
+            <div class="mat-btn active" onclick="setMat('White Vinyl', this)">
+              <span class="mi">🔳</span>White Vinyl
+            </div>
+            <div class="mat-btn" onclick="setMat('Clear Vinyl', this)">
+              <span class="mi">💎</span>Clear Vinyl
+            </div>
+            <div class="mat-btn" onclick="setMat('Holographic', this)">
+              <span class="mi">🌈</span>Holographic
+            </div>
+            <div class="mat-btn" onclick="setMat('Glitter', this)">
+              <span class="mi">✨</span>Glitter
+            </div>
+            <div class="mat-btn" onclick="setMat('Eco Vinyl', this)">
+              <span class="mi">🌿</span>Eco Vinyl
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CANVAS AREA -->
+      <div class="canvas-area">
+        <div class="toolbar">
+          <button class="tb-btn active" onclick="setTool('select', this)">
+            ↖ Select
+          </button>
+          <div class="tb-div"></div>
+          <button class="tb-btn" onclick="setTool('text', this)">T Text</button>
+          <div class="tb-div"></div>
+          <button class="tb-btn" onclick="undoLast()">↩ Undo</button>
+          <button class="tb-btn" onclick="clearAll()">🗑 Clear</button>
+          <div class="tb-div"></div>
+          <button class="tb-btn" onclick="saveDesign()">⬇ Save PNG</button>
+        </div>
+
+        <canvas id="sticker-canvas" width="460" height="460"></canvas>
+
+        <div class="canvas-info">
+          <span>📐 <span id="info-size">3"×3"</span></span>
+          <span>🧪 <span id="info-mat">White Vinyl</span></span>
+          <span>✂️ <span id="info-shape">Circle</span></span>
+          <span>💰 <span id="info-price">$2.99/unit</span></span>
+        </div>
+
+        <div
+          style="
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-align: center;
+            max-width: 360px;
+            line-height: 1.65;
+            position: relative;
+            z-index: 2;
+          "
+        >
+          💡 <strong>Tip:</strong> Upload your image → pick shape & color → add
+          text → set quantity → Add to Cart!
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="panel-right">
+        <!-- Text -->
+        <div class="ps">
+          <div class="pl">✏️ Add Text</div>
+          <input
+            type="text"
+            class="txt-input"
+            id="sticker-text"
+            placeholder="Your text here..."
+            maxlength="30"
+            oninput="updateText(this.value)"
+          />
+          <div class="font-grid" id="font-grid">
+            <div
+              class="font-btn active"
+              onclick="setFont('Cabinet Grotesk', this)"
+              style="font-weight: 900"
+            >
+              Bold
+            </div>
+            <div
+              class="font-btn"
+              onclick="setFont('Nunito', this)"
+              style="font-style: italic"
+            >
+              Round
+            </div>
+
+            
+            <div
+              class="font-btn"
+              onclick="setFont('Georgia', this)"
+              style="font-family: Georgia"
+            >
+              Serif
+            </div>
+            <div
+              class="font-btn"
+              onclick="setFont('monospace', this)"
+              style="font-family: monospace"
+            >
+              Mono
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 5px">
+            <div
+              style="font-size: 0.7rem; font-weight: 700; color: var(--muted)"
+            >
+              Font Size
+            </div>
+            <div class="slider-row">
+              <input
+                type="range"
+                min="14"
+                max="72"
+                value="32"
+                id="fs-slider"
+                oninput="setFontSize(this.value)"
+              />
+              <span class="sv2" id="fs-val">32px</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 5px">
+            <div
+              style="font-size: 0.7rem; font-weight: 700; color: var(--muted)"
+            >
+              Text Color
+            </div>
+            <div class="tc-row" id="tc-row">
+              <div
+                class="tc active"
+                style="background: #1a1a2e"
+                onclick="setTc('#1a1a2e', this)"
+              ></div>
+              <div
+                class="tc"
+                style="background: #ffffff; border: 2px solid #ddd"
+                onclick="setTc('#ffffff', this)"
+              ></div>
+              <div
+                class="tc"
+                style="background: #ffd23f"
+                onclick="setTc('#FFD23F', this)"
+              ></div>
+              <div
+                class="tc"
+                style="background: #ff6b9d"
+                onclick="setTc('#FF6B9D', this)"
+              ></div>
+              <div
+                class="tc"
+                style="background: #4ecdc4"
+                onclick="setTc('#4ECDC4', this)"
+              ></div>
+              <div
+                class="tc"
+                style="background: #9b5de5"
+                onclick="setTc('#9B5DE5', this)"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="ps">
+          <div class="pl">🛒 Order Summary</div>
+          <div class="order-box">
+            <div class="ol">
+              <span>Size</span><span id="sum-size">3"×3"</span>
+            </div>
+            <div class="ol">
+              <span>Material</span><span id="sum-mat">White Vinyl</span>
+            </div>
+            <div class="ol">
+              <span>Shape</span><span id="sum-shape">Circle</span>
+            </div>
+            <div class="ol">
+              <span>Price/unit</span><span id="sum-unit">$2.99</span>
+            </div>
+            <div class="ol">
+              <span>Quantity</span>
+              <div class="qty-stepper">
+                <button class="qty-btn" onclick="chQty(-1)">−</button>
+                <span class="qty-val" id="qty-val">25</span>
+                <button class="qty-btn" onclick="chQty(1)">+</button>
+              </div>
+            </div>
+            <div class="ol tot">
+              <span>Total</span><span id="sum-total">$74.75</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Qty -->
+        <div class="ps">
+          <div class="pl">📦 Quick Quantity</div>
+          <div class="qty-presets">
+            <div class="qp" onclick="setQty(10, this)">10</div>
+            <div class="qp active" onclick="setQty(25, this)">25</div>
+            <div class="qp" onclick="setQty(50, this)">50</div>
+            <div class="qp" onclick="setQty(100, this)">100</div>
+            <div class="qp" onclick="setQty(250, this)">250</div>
+            <div class="qp" onclick="setQty(500, this)">500</div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="ps" style="gap: 9px">
+          <button class="act-btn act-primary" onclick="addToCart()">
+            🛒 Add to Cart
+          </button>
+          <button class="act-btn act-yellow" onclick="saveDesign()">
+            ⬇ Save Design
+          </button>
+          <button class="act-btn act-ghost" onclick="clearAll()">
+            🗑 Start Over
+          </button>
+        </div>
+
+        <!-- Guarantee -->
+        <div class="gbox">
+          ✅ <strong>100% Satisfaction Guarantee</strong><br />
+          Free reprints for any quality issue.<br /><br />
+          🚀 <strong>Ships in 3–5 business days</strong><br />
+          Rush options available at checkout.
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+                const canvas = document.getElementById('sticker-canvas');
+                const ctx = canvas.getContext('2d');
+
+                const S = {
+                  shape:'circle', bg:'#FFFEF7', text:'', font:'Cabinet Grotesk',
+                  fontSize:32, textColor:'#1a1a2e', size:'3x3', unitPrice:2.99,
+                  material:'White Vinyl', qty:25, img:null, tool:'select', history:[]
+                };
+
+                // ── DRAW ──────────────────────────────────────────────────
+                function draw() {
+                  ctx.clearRect(0,0,460,460);
+                  const cx=230, cy=230, r=200;
+                  ctx.save();
+                  clip(cx,cy,r);
+                  ctx.fillStyle = S.bg;
+                  ctx.fill();
+                  ctx.clip();
+                  if (S.img) {
+                    const a = S.img.width/S.img.height;
+                    let dw=360, dh=360;
+                    if(a>1) dh=360/a; else dw=360*a;
+                    ctx.
+
+            
+            drawImage(S.img, cx-dw/2, cy-dh/2, dw, dh);
+                  }
+                  if (S.material==='Holographic') holo();
+                  if (S.material==='Glitter') glitter();
+                  ctx.restore();
+                  // Border
+                  ctx.save();
+                  clip(cx,cy,r);
+                  ctx.strokeStyle = S.bg==='#1a1a2e' ? '#fff' : '#1a1a2e';
+                  ctx.lineWidth=4; ctx.stroke();
+                  ctx.restore();
+                  // Text
+                  if (S.text) {
+                    ctx.save();
+                    ctx.font = 900 ${S.fontSize}px '${S.font}',sans-serif;
+                    ctx.textAlign='center'; ctx.textBaseline='middle';
+                    ctx.fillStyle = S.textColor;
+                    ctx.shadowColor='rgba(0,0,0,.15)'; ctx.shadowBlur=4; ctx.shadowOffsetY=2;
+                    ctx.fillText(S.text, cx, S.img ? cy+140 : cy, 380);
+                    ctx.restore();
+                  }
+                }
+
+                function clip(cx,cy,r) {
+                  ctx.beginPath();
+                  if(S.shape==='circle') ctx.arc(cx,cy,r,0,Math.PI*2);
+                  else if(S.shape==='square') ctx.rect(30,30,400,400);
+                  else if(S.shape==='rounded') rr(ctx,30,30,400,400,50);
+                  else if(S.shape==='star') star(ctx,cx,cy,r,5,.42);
+                  else if(S.shape==='heart') heart(ctx,cx,cy,r);
+                  else ctx.arc(cx,cy,r,0,Math.PI*2);
+                  ctx.closePath();
+                }
+
+                function rr(c,x,y,w,h,r){c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.arcTo(x+w,y,x+w,y+r,r);c.lineTo(x+w,y+h-r);c.arcTo(x+w,y+h,x+w-r,y+h,r);c.lineTo(x+r,y+h);c.arcTo(x,y+h,x,y+h-r,r);c.lineTo(x,y+r);c.arcTo(x,y,x+r,y,r);}
+                function star(c,cx,cy,oR,pts,iR){const inner=oR*iR;for(let i=0;i<pts*2;i++){const a=(i*Math.PI/pts)-Math.PI/2;const rr=i%2===0?oR:inner;i===0?c.moveTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a)):c.lineTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a));}}
+                function heart(c,cx,cy,r){c.moveTo(cx,cy+r*.35);c.bezierCurveTo(cx,cy+r*.15,cx-r,cy-r*.15,cx-r*.85,cy-r*.35);c.bezierCurveTo(cx-r*.6,cy-r*.7,cx,cy-r*.45,cx,cy-r*.2);c.bezierCurveTo(cx,cy-r*.45,cx+r*.6,cy-r*.7,cx+r*.85,cy-r*.35);c.bezierCurveTo(cx+r,cy-r*.15,cx,cy+r*.15,cx,cy+r*.35);}
+                function holo(){const g=ctx.createLinearGradient(30,30,430,430);g.addColorStop(0,'rgba(255,100,150,.22)');g.addColorStop(.25,'rgba(100,200,255,.22)');g.addColorStop(.5,'rgba(200,100,255,.22)');g.addColorStop(.75,'rgba(100,255,200,.22)');g.addColorStop(1,'rgba(255,220,50,.22)');ctx.fillStyle=g;ctx.fillRect(0,0,460,460);}
+                function glitter(){for(let i=0;i<90;i++){ctx.fillStyle=`rgba(255,220,50,${Math.random()*.7+.2})`;ctx.beginPath();ctx.arc(Math.random()*460,Math.random()*460,Math.random()*2+.5,0,Math.PI*2);ctx.fill();}}
+
+                // ── CONTROLS ──────────────────────────────────────────────
+                function setShape(v,el){snap();S.shape=v;qa('.sh-btn',el);document.getElementById('info-shape').textContent=cap(v);document.getElementById('sum-shape').textContent=cap(v);draw();}
+                function setBg(v,el){snap();S.bg=v;if(el)qa('#bg-grid .cd',el);draw();}
+                function setSize(v,p,el){S.size=v;S.unitPrice=p;const lb=v.replace('x','"×')+'"';qa('.sz-btn',el);document.getElementById('info-size').textContent=lb;document.getElementById('sum-size').textContent=lb;document.getElementById('sum-unit').textContent='$'+p.toFixed(2);document.getElementById('info-price').textContent='$'+p.toFixed(2)+'/unit';calcTotal();}
+                function setMat(v,el){snap();S.material=v;qa('.mat-btn',el);document.getElementById('info-mat').textContent=v;document.getElementById('sum-mat').textContent=v;draw();}
+                function setTool(v,el){S.tool=v;qa('.tb-btn',el);canvas.style.cursor=v==='text'?'text':'crosshair';}
+                function updateText(v){S.text=v;draw();}
+                function setFont(v,el){S.font=v;qa('#font-grid .font-btn',el);draw();}
+                function setFontSize(v){S.fontSize=parseInt(v);document.getElementById('fs-val').textContent=v+'px';draw();}
+                function setTc(v,el){S.textColor=v;qa('#tc-row .tc',el);draw();}
+                function chQty(d){S.qty=Math.max(1,S.qty+d);document.getElementById('qty-val').textContent=S.qty;calcTotal();}
+                function setQty(v,el){S.qty=v;document.getElementById('qty-val').textContent=v;qa('.qp',el);calcTotal();}
+                function calcTotal(){document.getElementById('sum-total').textContent='$'+(S.unitPrice*S.qty).toFixed(2);}
+
+                // ── UPLOAD ────────────────────────────────────────────────
+
+            
+            function handleUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+          toast('Please upload an image file! ❌');
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(ev) {
+          const img = new Image();
+
+          img.onload = function() {
+            snap();
+            S.img = img;
+            draw();
+            toast('Image uploaded! ✅');
+          };
+
+          img.onerror = function() {
+            toast('Error loading image. Try another file! ❌');
+          };
+
+          img.src = ev.target.result;
+        };
+
+        reader.onerror = function() {
+          toast('Error reading file. Try again! ❌');
+        };
+
+        reader.readAsDataURL(file);
+      }
+                const uz=document.getElementById('upload-zone');
+                uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('over');});
+                uz.addEventListener('dragleave',()=>uz.classList.remove('over'));
+                uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('over');const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))handleUpload({target:{files:[f]}});});
+                canvas.addEventListener('click',()=>{if(S.tool==='text')document.getElementById('sticker-text').focus();});
+
+                // ── HISTORY ───────────────────────────────────────────────
+                function snap(){S.history.push(canvas.toDataURL());if(S.history.length>20)S.history.shift();}
+                function undoLast(){if(!S.history.length){toast('Nothing to undo.');return;}const prev=S.history.pop();const img=new Image();img.onload=()=>{ctx.clearRect(0,0,460,460);ctx.drawImage(img,0,0);};img.src=prev;}
+
+                // ── ACTIONS ───────────────────────────────────────────────
+                function clearAll(){snap();S.img=null;S.text='';document.getElementById('sticker-text').value='';draw();toast('Canvas cleared!');}
+                function saveDesign(){const l=document.createElement('a');l.download='my-sticker.png';l.href=canvas.toDataURL('image/png');l.click();toast('Saved as PNG! 🎨');}
+                function addToCart(){toast(`✅ ${S.qty}× ${S.size}" stickers added to cart!`);setTimeout(()=>{window.location.href='index.html';},1900);}
+
+                // ── HELPERS ───────────────────────────────────────────────
+                function qa(sel,active){document.querySelectorAll(sel).forEach(b=>b.classList.remove('active'));if(active)active.classList.add('active');}
+                function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+                function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+
+                // ── INIT ──────────────────────────────────────────────────
+                calcTotal();
+                draw();
+    </script>
+  </body>
+</html>
